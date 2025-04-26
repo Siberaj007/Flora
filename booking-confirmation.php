@@ -21,7 +21,7 @@ $stmt->execute([$bookingId, $userId]);
 $booking = $stmt->fetch();
 
 if (!$booking) {
-    header("Location: index.php");
+    echo "Booking not found.";
     exit();
 }
 

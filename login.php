@@ -38,37 +38,58 @@ include 'includes/header.php';
 
 <section class="auth-section">
     <div class="container">
-        <div class="auth-container">
+        <div class="auth-container animate__animated animate__fadeIn">
             <div class="auth-form">
-                <h2>Login to Your Account</h2>
+                <h2>Welcome Back!</h2>
+                <p class="auth-subtitle">Please login to your account to continue</p>
+                
                 <?php if ($error): ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <?php echo $error; ?>
+                    </div>
                 <?php endif; ?>
                 
-                <form method="POST">
+                <form method="POST" class="mt-4">
                     <div class="form-group">
-                        <label for="username">Username or Email</label>
+                        <label for="username">
+                            <i class="fas fa-user"></i> Username or Email
+                        </label>
                         <input type="text" id="username" name="username" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" required>
+                        <label for="password">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" class="form-control" required>
+                            <button type="button" class="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
                     </div>
                     
                     <div class="auth-links">
-                        <a href="register.php">Don't have an account? Register</a>
-                        <a href="forgot-password.php">Forgot password?</a>
+                        <a href="register.php">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </a>
+                        <a href="forgot-password.php">
+                            <i class="fas fa-key"></i> Forgot Password?
+                        </a>
                     </div>
                 </form>
             </div>
             
             <div class="auth-image">
-                <img src="assets/images/login-image.jpg" alt="Floral Arrangement">
+                <img src="assets/images/login-image.jpg" alt="Floral Login">
+                <div class="auth-overlay"></div>
             </div>
         </div>
     </div>

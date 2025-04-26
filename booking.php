@@ -1,25 +1,25 @@
 <?php include 'includes/header.php'; ?>
 
-<section class="page-header">
+<div class="page-header parallax" style="background-image: url('assets/images/booking-header.jpg');">
     <div class="container">
-        <h1>Event Decorations Booking</h1>
+        <h1 class="animate__animated animate__fadeInUp">Book Your Event Decoration</h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Decorations Booking</li>
+                <li class="breadcrumb-item active">Event Booking</li>
             </ol>
         </nav>
     </div>
-</section>
+</div>
 
 <section class="booking-section">
     <div class="container">
         <div class="booking-container">
-            <div class="booking-form">
-                <h2>Book Your Event Decorations</h2>
-                <p>Fill out the form below to request our decoration services for your special event.</p>
+            <div class="booking-form animate__animated animate__fadeInLeft">
+                <h2>Create Your Perfect Event</h2>
+                <p>Fill out the form below and our team will get back to you within 24 hours.</p>
                 
-                <form id="decoration-booking" action="process-booking.php" method="POST">
+                <form id="booking-form" action="process-booking.php" method="POST" class="needs-validation">
                     <div class="form-group">
                         <label for="event-type">Event Type</label>
                         <select id="event-type" name="event_type" class="form-control" required>
@@ -88,6 +88,26 @@
                     </div>
                     
                     <div class="form-group">
+                        <label class="form-label">Choose Your Decoration Package</label>
+                        <div class="decoration-options">
+                            <div class="option-card">
+                                <input type="radio" name="package" id="basic" value="basic" required>
+                                <label for="basic">
+                                    <div class="package-header">
+                                        <h4>Basic Package</h4>
+                                        <div class="price">$499</div>
+                                    </div>
+                                    <ul class="package-features">
+                                        <li><i class="fas fa-check"></i> Entry Decoration</li>
+                                        <li><i class="fas fa-check"></i> 2 Flower Stands</li>
+                                        <li><i class="fas fa-check"></i> Basic Table Centerpieces</li>
+                                    </ul>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="budget">Estimated Budget ($)</label>
                         <input type="range" id="budget" name="budget" min="100" max="10000" step="100" value="1000" class="form-control">
                         <div class="budget-value">$<span id="budget-value">1000</span></div>
@@ -99,12 +119,14 @@
                     </div>
                     
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Submit Booking Request</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">
+                            Submit Booking Request
+                        </button>
                     </div>
                 </form>
             </div>
-            
-            <div class="booking-info">
+
+            <aside class="booking-info animate__animated animate__fadeInRight">
                 <div class="info-card">
                     <h3>Why Choose Our Decoration Services?</h3>
                     <ul>
@@ -139,7 +161,7 @@
                     </ul>
                 </div>
                 
-                <div class="testimonial-card">
+                <div class="testimonial-card" data-aos="fade-left">
                     <div class="rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -156,7 +178,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                
+                <div class="need-help">
+                    <h3>Need Help?</h3>
+                    <p>Contact our event specialists</p>
+                    <a href="tel:+1234567890" class="btn btn-outline btn-block">
+                        <i class="fas fa-phone"></i> Call Us
+                    </a>
+                </div>
+            </aside>
         </div>
     </div>
 </section>

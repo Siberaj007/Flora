@@ -1,42 +1,89 @@
-<?php include 'includes/header.php'; ?>
+<?php 
+require_once 'includes/config.php';
+require_once 'includes/header.php';
+require_once 'includes/db.php';
 
-<section class="hero">
+// Error handling for products
+try {
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE stock_quantity > 0 ORDER BY RAND() LIMIT 4");
+    $stmt->execute();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    $products = [];
+}
+
+// Add status check
+$pageTitle = 'Home';
+$productsAvailable = !empty($products);
+
+// Hero slider content
+$heroSlides = [
+    [
+        'image' => 'assets/images/hero1.jpg',
+        'title' => 'Beautiful Flowers for Every Occasion',
+        'description' => 'Fresh flowers handcrafted with love',
+        'link' => 'products.php?category=flower',
+        'button' => 'Shop Now'
+    ],
+    [
+        'image' => 'assets/images/hero2.jpg',
+        'title' => 'Exquisite Garlands for Your Events',
+        'description' => 'Traditional and modern designs available',
+        'link' => 'products.php?category=garland',
+        'button' => 'Explore Garlands'
+    ],
+    [
+        'image' => 'assets/images/hero3.jpg',
+        'title' => 'Professional Event Decorations',
+        'description' => 'Let us make your event unforgettable',
+        'link' => 'booking.php',
+        'button' => 'Book Now'
+    ]
+];
+?>
+
+<!-- Hero Section with Enhanced Animation -->
+<section class="hero parallax">
     <div class="hero-slider">
-        <div class="slide active" style="background-image: url('assets/images/hero1.jpg');">
+        <?php foreach ($heroSlides as $index => $slide): ?>
+        <div class="slide <?php echo $index === 0 ? 'active' : ''; ?>" 
+             style="background-image: url('<?php echo htmlspecialchars($slide['image']); ?>');">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="slide-up">Beautiful Flowers for Every Occasion</h1>
-                    <p class="slide-up delay-1">Fresh flowers handcrafted with love</p>
-                    <a href="products.php?category=flower" class="btn btn-primary slide-up delay-2">Shop Now</a>
+                    <h1><?php echo htmlspecialchars($slide['title']); ?></h1>
+                    <p><?php echo htmlspecialchars($slide['description']); ?></p>
+                    <a href="<?php echo htmlspecialchars($slide['link']); ?>" 
+                       class="btn btn-primary"><?php echo htmlspecialchars($slide['button']); ?></a>
                 </div>
             </div>
         </div>
-        <div class="slide" style="background-image: url('assets/images/hero2.jpg');">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Exquisite Garlands for Your Events</h1>
-                    <p>Traditional and modern designs available</p>
-                    <a href="products.php?category=garland" class="btn btn-primary">Explore Garlands</a>
-                </div>
-            </div>
-        </div>
-        <div class="slide" style="background-image: url('assets/images/hero3.jpg');">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Professional Event Decorations</h1>
-                    <p>Let us make your event unforgettable</p>
-                    <a href="booking.php" class="btn btn-primary">Book Now</a>
-                </div>
-            </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="slider-navigation">
+        <div class="prev-slide"><i class="fas fa-chevron-left"></i></div>
+        <div class="next-slide"><i class="fas fa-chevron-right"></i></div>
+        <div class="slider-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
     </div>
-    <div class="slider-controls">
-        <button class="prev-slide"><i class="fas fa-chevron-left"></i></button>
-        <button class="next-slide"><i class="fas fa-chevron-right"></i></button>
+    <div class="hero-overlay"></div>
+    <div class="scroll-indicator">
+        <div class="mouse">
+            <div class="wheel"></div>
+        </div>
+        <p>Scroll to explore</p>
     </div>
 </section>
 
-<section class="categories">
+<!-- Add floating action button -->
+<div class="floating-action-btn" title="Contact Us">
+    <i class="fas fa-envelope"></i>
+</div>
+
+<section id="categories" class="categories">
     <div class="container">
         <h2 class="section-title fade-in">Our Categories</h2>
         <div class="category-grid">
@@ -51,7 +98,6 @@
                     <a href="products.php?category=flower" class="btn btn-outline">Shop Flowers</a>
                 </div>
             </div>
-            
             <div class="category-card scale-up delay-1">
                 <div class="category-image">
                     <img src="assets/images/category2.jpg" alt="Garlands">
@@ -63,7 +109,6 @@
                     <a href="products.php?category=garland" class="btn btn-outline">Shop Garlands</a>
                 </div>
             </div>
-            
             <div class="category-card scale-up delay-2">
                 <div class="category-image">
                     <img src="assets/images/category3.jpg" alt="Decorations">
@@ -79,37 +124,55 @@
     </div>
 </section>
 
-<section class="featured-products">
+<section id="features" class="features">
+    <div class="container">
+        <h2 class="section-title">Why Choose Us</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-truck"></i>
+                <h3>Fast Delivery</h3>
+                <p>Same day delivery available</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-flower"></i>
+                <h3>Fresh Flowers</h3>
+                <p>Handpicked daily from local gardens</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3>Expert Care</h3>
+                <p>Professional florists at your service</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="featured-products" class="featured-products">
     <div class="container">
         <h2 class="section-title fade-in">Featured Products</h2>
         <div class="product-grid">
-            <?php
-            require_once 'includes/db.php';
-            $stmt = $pdo->prepare("SELECT * FROM products WHERE stock_quantity > 0 ORDER BY RAND() LIMIT 4");
-            $stmt->execute();
-            $products = $stmt->fetchAll();
-            
-            foreach($products as $product): 
-                $animationDelay = 0.1 * ($loop->index % 4);
-            ?>
-            <div class="product-card fade-in" style="animation-delay: <?php echo $animationDelay; ?>s">
-                <div class="product-image">
-                    <img src="<?php echo $product['image_url'] ?: 'assets/images/product-placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
-                    <div class="product-actions">
-                        <button class="quick-view" data-id="<?php echo $product['id']; ?>"><i class="fas fa-eye"></i></button>
-                        <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+            <?php if (empty($products)): ?>
+                <div class="no-products">
+                    <p>No products available at the moment.</p>
+                </div>
+            <?php else: ?>
+                <?php foreach ($products as $product): ?>
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        <img src="<?php echo $product['image_url'] ?: 'assets/images/product-placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <div class="product-actions">
+                            <button class="quick-view" data-id="<?php echo $product['id']; ?>"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                        </div>
                     </div>
-                    <?php if($product['stock_quantity'] < 5): ?>
-                        <span class="stock-badge">Only <?php echo $product['stock_quantity']; ?> left</span>
-                    <?php endif; ?>
+                    <div class="product-content">
+                        <h3><a href="product-detail.php?id=<?php echo $product['id']; ?>"><?php echo htmlspecialchars($product['name']); ?></a></h3>
+                        <div class="price">$<?php echo number_format($product['price'], 2); ?></div>
+                        <button class="btn btn-sm add-to-cart" data-id="<?php echo $product['id']; ?>">Add to Cart</button>
+                    </div>
                 </div>
-                <div class="product-content">
-                    <h3><a href="product-detail.php?id=<?php echo $product['id']; ?>"><?php echo htmlspecialchars($product['name']); ?></a></h3>
-                    <div class="price">$<?php echo number_format($product['price'], 2); ?></div>
-                    <button class="btn btn-sm add-to-cart" data-id="<?php echo $product['id']; ?>">Add to Cart</button>
-                </div>
-            </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
         <div class="text-center mt-4">
             <a href="products.php" class="btn btn-primary">View All Products</a>
@@ -140,7 +203,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="testimonial">
                 <div class="testimonial-content">
                     <div class="rating">
@@ -160,7 +222,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="testimonial">
                 <div class="testimonial-content">
                     <div class="rating">
@@ -191,10 +252,10 @@
 
 <section class="cta">
     <div class="container">
-        <div class="cta-content">
-            <h2 class="fade-in">Need Help With Your Event Decorations?</h2>
-            <p class="fade-in delay-1">Our team of professionals will work with you to create the perfect floral arrangements for your special occasion.</p>
-            <a href="booking.php" class="btn btn-primary fade-in delay-2">Book a Consultation</a>
+        <div class="cta-content fade-in">
+            <h2>Need Help With Your Event Decorations?</h2>
+            <p>Our team of professionals will work with you to create the perfect floral arrangements for your special occasion.</p>
+            <a href="booking.php" class="btn btn-primary">Book a Consultation</a>
         </div>
     </div>
 </section>

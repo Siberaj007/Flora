@@ -1,9 +1,8 @@
 <?php 
 include 'includes/header.php';
-
 require_once 'includes/db.php';
 
-if(!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php?redirect=checkout");
     exit();
 }
@@ -20,18 +19,17 @@ $stmt = $pdo->prepare("
 $stmt->execute([$userId]);
 $cartItems = $stmt->fetchAll();
 
-// Check if cart is empty
-if(count($cartItems) === 0) {
+if (count($cartItems) === 0) {
     header("Location: cart.php");
     exit();
 }
 
 // Calculate totals
 $subtotal = 0;
-foreach($cartItems as $item) {
+foreach ($cartItems as $item) {
     $subtotal += $item['price'] * $item['quantity'];
 }
-$shipping = $subtotal > 100 ? 0 : 15; // Free shipping for orders over $100
+$shipping = $subtotal > 100 ? 0 : 15;
 $total = $subtotal + $shipping;
 
 // Get user info

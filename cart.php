@@ -1,9 +1,8 @@
 <?php 
 include 'includes/header.php';
-
 require_once 'includes/db.php';
 
-if(!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php?redirect=cart");
     exit();
 }
@@ -22,7 +21,7 @@ $cartItems = $stmt->fetchAll();
 
 // Calculate totals
 $subtotal = 0;
-foreach($cartItems as $item) {
+foreach ($cartItems as $item) {
     $subtotal += $item['price'] * $item['quantity'];
 }
 $shipping = $subtotal > 100 ? 0 : 15; // Free shipping for orders over $100
